@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+typedef struct Pessoa{
+  char nome[50];
+  int idade;
+  int id;
+  struct Pessoa *prox;//ponteiro que armazena o endereço da proxima pessoa
+}Pessoa;
+
+//funcao para criar um novo registro
+Pessoa* criarPessoa(){
+    Pessoa *novaPessoa = (Pessoa*)malloc(sizeof(Pessoa));
+    if(novaPessoa == NULL){
+      printf("Erro de alocação");
+      exit(EXIT_FAILURE);
+    }
+    novaPessoa->prox = NULL;
+    return novaPessoa;
+}
+
+Pessoa* cadastrar(Pessoa *lista){
+    srand(time(NULL));
+    Pessoa *novaPessoa = criarPessoa();
+    novaPessoa->id = rand() % 100;
+    printf("\nDigite o nome: ");
+    fflush(stdin);
+    fgets(novaPessoa->nome, sizeof(novaPessoa->nome), stdin);
+    printf("\nDigite a idade: ");
+    scanf("%d", &novaPessoa->idade);
+    printf("\n");
+  //verificar se a lista é nula
+    if(lista == NULL){
+      return novaPessoa;
+    }else{
+    //percorrer a lista até o ultimo elemento
+      Pessoa *aux = lista;
+      while(aux->prox != NULL){
+      aux = aux->prox;
+      //sai da repeticao quando encotrar o elemento que aponta para NULL
+    }
+    aux->prox = novaPessoa;
+    return lista;//atualizar a lista
+  }
+}
+
+void mostrarLista(Pessoa *lista){
+  if(lista == NULL){
+    printf("\nLista Vazia");
+    printf("\n");
+  }else{
+    Pessoa *aux = lista;
+    while(aux != NULL){
+      printf("\nNome: %s", aux->nome);
+      printf("Idade: %d", aux->idade);
+      printf("Id: %d", aux->id);
+      printf("\n");
+      aux = aux->prox;
+    }
+  }
+}
+
+void buscarPessoa(Pessoa *lista, int idBusca){
+    Pessoa *aux = lista;
+    while(aux != NULL){
+      if(aux->id == idBusca){
+        printf("\nNome: %s", aux->nome);
+        printf("Idade: %d", aux->idade);
+        printf("Id: %d", aux->id);
+        return;
+      }
+      aux = aux->prox;
+    }
+    printf("\nPessoa nao encontrada");
+}
+
+int main(){
+  int opcao;
+  int idBusca;
+  Pessoa *lista = NULL;//sempre vai ser o primeiro da lista
+  
+  do{
+    printf("digite 1 para cadastrar: ");
+    printf("\ndigite 2 para mostrar: ");
+    printf("\ndigite 3 para buscar: ");
+    printf("\ndigite 4 para alterar: ");
+    printf("\ndigite 5 para excluir: ");
+    printf("\ndigite 0 para sair: ");
+    scanf("%d", &opcao);
+    switch(opcao){
+      case 1:
+        lista = cadastrar(lista);
+      break;
+      case 2:
+        mostrarLista(lista);
+      break;
+      case 3:
+        printf("\nDigite o id a ser buscado: ");
+        scanf("%d", &idBusca);
+        buscarPessoa(lista, idBusca);
+      break;
+      break;
+      case 4:
+
+      break;
+      case 5:
+
+      break;
+    }
+  }while(opcao != 0);
+  
+  return 0;
+}
